@@ -1,14 +1,21 @@
 
-name: Setup Certificate Only
+
+name: Setup DigiCert Environment Variables
 
 on:
   workflow_dispatch:
 
 jobs:
-  setup-certificate:
+  set-variables:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up certificate
+      - name: Set variables
+        id: variables
         run: |
-          echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > Certificate_pkcs12.p12
+          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          echo "SM_HOST=${{ secrets.SM_HOST }}" >> "$GITHUB_ENV"
+          echo "SM_API_KEY=${{ secrets.SM_API_KEY }}" >> "$GITHUB_ENV"
+          echo "SM_CLIENT_CERT_FILE=Certificate_pkcs12.p12" >> "$GITHUB_ENV"
+          echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV"
         shell: bash
+
