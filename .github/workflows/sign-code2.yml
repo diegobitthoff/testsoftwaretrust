@@ -57,6 +57,10 @@ jobs:
         shell: cmd
 
 
+      - name: Listar certificados disponibles
+        run: smctl list-certificates
+        shell: cmd
+
 
 
 
