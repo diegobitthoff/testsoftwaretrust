@@ -1,19 +1,5 @@
-name: Sign Code with DigiCert Software Trust Manager
+- name: Set up certificate 
 
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  sign-code:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install DigiCert Client tools from Github Custom Actions marketplace
-        id: Plugin
-        uses: digicert/ssm-code-signing@v1.1.0
-        env:
-          FORCE_DOWNLOAD_TOOLS: 'true'
+  run: | 
+    echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > /d/Certificate_pkcs12.p12 
+  shell: bash 
