@@ -34,6 +34,11 @@ jobs:
           echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> "$GITHUB_ENV" 
           echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV" 
         shell: bash
+        
+        
+      - name: Listar archivos en .build
+        run: dir .build
+
 
       - name: Signing using certificate fingerprint      
         run: |
