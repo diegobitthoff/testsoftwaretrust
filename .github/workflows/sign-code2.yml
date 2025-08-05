@@ -1,0 +1,78 @@
+
+name: Code Signing Template v2
+ 
+on: 
+  workflow_dispatch:
+ 
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [windows-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4 
+     
+      - name: Install DigiCert Client tools from Github Custom Actions marketplace
+        id: Digicert_Code_Signing_Snippet
+        uses: digicert/ssm-code-signing@v1.1.0
+   
+      - name: Set up certificate 
+        run: | 
+          echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > Certificate_pkcs12.p12 
+        shell: bash  
+        
+      - name: Set variables 
+        id: variables 
+        run: | 
+          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT 
+          echo "SM_HOST=${{ secrets.SM_HOST }}" >> "$GITHUB_ENV" 
+          echo "SM_API_KEY=${{ secrets.SM_API_KEY }}" >> "$GITHUB_ENV" 
+          echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> "$GITHUB_ENV" 
+          echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV" 
+        shell: bash
+        
+        
+      - name: Listar archivos en .build
+        run: dir .build
+        
+        
+      - name: Verificar existencia de pkcs11properties.cfg
+        run: |
+          if exist "C:\Program Files\DigiCert\pkcs11properties.cfg" (
+            echo El archivo pkcs11properties.cfg existe.
+          ) else (
+            echo ERROR: El archivo pkcs11properties.cfg no se encontró.
+            exit /b 1
+          )
+        shell: cmd
+        
+        
+      - name: Habilitar logging detallado
+        run: set SM_LOG_LEVEL=TRACE
+        shell: cmd
+
+
+
+
+      - name: Signing using certificate fingerprint      
+        run: |
+           smctl sign --fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --input .build/formulario.dll --config-file C:\Program Files\DigiCert\pkcs11properties.cfg
+        shell: cmd
+        
+        
+      - name: Copiar log de smctl
+        run: copy "%USERPROFILE%\.signingmanager\logs\smctl.log" smctl.log
+        shell: cmd
+
+      - name: Subir log como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+            name: smctl-log
+            path: smctl.log
+
+
+
