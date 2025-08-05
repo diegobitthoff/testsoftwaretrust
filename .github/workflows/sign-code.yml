@@ -1,4 +1,4 @@
-name: Sign Code with Digicert
+name: Sign Code with DigiCert Software Trust Manager
 
 on:
   push:
@@ -9,11 +9,11 @@ jobs:
   sign-code:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Sign code
-        uses: digicert/software-trust-signing-action@v1
-        with:
-          api-key: ${{ secrets.SM_API_KEY }}
-          file-path: .build/formulario.html
+      - name: Install DigiCert Client tools from Github Custom Actions marketplace
+        id: Plugin
+        uses: digicert/ssm-code-signing@v1.1.0
+        env:
+          FORCE_DOWNLOAD_TOOLS: 'true'
