@@ -1,0 +1,19 @@
+name: Sign Code with Digicert
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sign-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Sign code
+        uses: digicert/software-trust-signing-action@v1
+        with:
+          api-key: ${{ secrets.DIGICERT_API_KEY }}
+          file-path: ./ruta/al/archivo/a/firmar
