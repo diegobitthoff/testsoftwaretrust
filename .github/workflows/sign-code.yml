@@ -1,5 +1,14 @@
-- name: Set up certificate 
 
-  run: | 
-    echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > /d/Certificate_pkcs12.p12 
-  shell: bash 
+name: Setup Certificate Only
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-certificate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up certificate
+        run: |
+          echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > Certificate_pkcs12.p12
+        shell: bash
