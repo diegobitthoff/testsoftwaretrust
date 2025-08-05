@@ -57,9 +57,9 @@ jobs:
         shell: cmd
 
 
-      - name: Listar keypairs disponibles
-        run: smctl list-keypairs
-        shell: cmd
+     # - name: Listar keypairs disponibles
+      #  run: smctl list-keypairs
+       # shell: cmd
 
 
 
