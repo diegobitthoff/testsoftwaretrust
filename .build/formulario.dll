@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario Certificado PKI MTLS</title>
+</head>
+<body>
+  <h2>Formulario Certificado PKI MTLS Interna</h2>
+
+  <label for="commonName">Common Name:</label>
+  <input type="text" id="commonName"><br><br>
+
+  <label for="email">Correo electrónico:</label>
+  <input type="email" id="email"><br><br>
+
+  <label for="ticket">Ticket HELIX:</label>
+  <input type="text" id="ticket"><br><br>
+
+  <label for="comboMap">Seleccione una opción:</label>
+  <select id="comboMap">
+    <option value="A" data-enlace="https://demo.one.digicert.com/mpki/web-enrollment/f14602cb-4346-474c-9a1c-4c376f3063b2" data-cadena="'Prosegur Compañía de Seguridad Root CA' => 'Prosegur DEV CA'">DEV PGA MTLS Client-2Y</option>
+    <option value="B" data-enlace="https://demo.one.digicert.com/mpki/web-enrollment/ff930678-3593-47dd-911f-aa3122f11f33" data-cadena="'Prosegur Compañía de Seguridad Root CA' => 'Prosegur DEV CA'">DEV ALARMAS MTLS Client-2Y</option>
+    <option value="C" data-enlace="https://demo.one.digicert.com/mpki/web-enrollment/2ccad0cb-50d6-48ec-b4c9-f7415e06bfca" data-cadena="'Prosegur Compañía de Seguridad Root CA' => 'Prosegur DEV CA'">DEV SIS MTLS Client-2Y</option>
+    <option value="D" data-enlace="https://demo.one.digicert.com/mpki/web-enrollment/ab3798e5-75d8-4482-b188-67027381881c" data-cadena="'Prosegur Compañía de Seguridad Root CA' => 'Prosegur DEV CA'">DEV CASH MTLS Client-2Y</option>
+    <option value="E" data-enlace="https://demo.one.digicert.com/mpki/web-enrollment/8c03b915-5e3e-4bc9-884b-a46c3f4dc91d" data-cadena="'Prosegur Compañía de Seguridad Root CA' => 'Prosegur DEV CA'">DEV AVOS MTLS Client-2Y</option>
+    <option value="f" data-enlace="https://demo.one.digicert.com/mpki/web-enrollment/f06720f3-39e2-49bc-b767-98e8431579af" data-cadena="'Prosegur Compañía de Seguridad Root CA' => 'Prosegur DEV CA'">DEV CIPHER MTLS Client-2Y</option>
+	
+    <option value="g" data-enlace="https://one.digicert.com/mpki/web-enrollment/fa5a9c47-8b7a-4ed7-b505-2729cb5b997b" data-cadena="'Prosegur Compañía de Seguridad - Internal RSA Root CA => Prosegur Compañía de Seguridad - Internal RSA PGA CA'">PRO PGA MTLS Client-2Y</option>
+	<option value="g" data-enlace="https://one.digicert.com/mpki/web-enrollment/ee6ccaad-23e5-4099-b834-58c743073b92" data-cadena="'Prosegur Compañía de Seguridad - Internal RSA Root CA => Prosegur Compañía de Seguridad - Internal RSA PGA CA'">PRO PGA MTLS Client-WIFI-2Y</option>
+    <option value="h" data-enlace="https://one.digicert.com/mpki/web-enrollment/d4e4c58f-e89d-474f-8b2a-403d360084fe" data-cadena="'Prosegur Compañía de Seguridad - Internal RSA Root CA => Prosegur Compañía de Seguridad - Internal RSA ALARMS CA'">PRO ALARMAS MTLS Client-2Y</option>
+	<option value="h" data-enlace="https://one.digicert.com/mpki/web-enrollment/68f52a97-79e8-42d7-8a32-1756c3994bad" data-cadena="'Prosegur Compañía de Seguridad - Internal RSA Root CA => Prosegur Compañía de Seguridad - Internal RSA SIS CA'">PRO SIS MTLS Client-2Y</option>
+	<option value="h" data-enlace="https://one.digicert.com/mpki/web-enrollment/792bf64a-0094-4065-b67f-7d9de3d2b7c0" data-cadena="'Prosegur Compañía de Seguridad - Internal RSA Root CA => Prosegur Compañía de Seguridad - Internal RSA Cash CA'">PRO CASH MTLS Client-2Y</option>
+	<option value="h" data-enlace="https://one.digicert.com/mpki/web-enrollment/cab0a37b-a112-4b57-a3d5-46f195d23d59" data-cadena="'Prosegur Compañía de Seguridad - Internal RSA Root CA => Prosegur Compañía de Seguridad - Internal RSA Cash CA'">PRO CASH MTLS Client DataEncrypt-2Y</option>
+	<option value="h" data-enlace="https://one.digicert.com/mpki/web-enrollment/ff2ea57d-ebbb-45ca-9bed-eb828abe113d" data-cadena="'Prosegur Compañía de Seguridad - Internal RSA Root CA => Prosegur Compañía de Seguridad - Internal RSA AVOS CA'">PRO AVOS MTLS Client-2Y</option>
+	<option value="h" data-enlace="https://one.digicert.com/mpki/web-enrollment/cccc7eff-7fcd-4d06-9591-eca59b42655b" data-cadena="'Prosegur Compañía de Seguridad - Internal RSA Root CA => Prosegur Compañía de Seguridad - Internal RSA Chiper CA'">PRO Cipher MTLS Client-2Y</option>
+	<option value="h" data-enlace="https://one.digicert.com/mpki/web-enrollment/630501ef-37a1-41d2-86c6-7238c1e8703a" data-cadena="'Prosegur Compañía de Seguridad - Internal RSA Root CA => Prosegur Compañía de Seguridad - Internal RSA Chiper CA'">PRO Cipher AKAMAI MTLS Client-5Y</option>
+
+    
+
+
+
+    
+    
+    
+
+  </select><br><br>
+
+  <button id="generateBtn">Generar texto</button><br><br>
+
+  <textarea id="output" rows="25" cols="100"></textarea>
+
+  <script>
+    document.getElementById("generateBtn").addEventListener("click", function () {
+      const commonName = document.getElementById("commonName").value;
+      const email = document.getElementById("email").value;
+      const ticket = document.getElementById("ticket").value;
+
+      const combo = document.getElementById("comboMap");
+      const selectedOption = combo.options[combo.selectedIndex];
+      const enlace = selectedOption.getAttribute("data-enlace");
+      const cadena = selectedOption.getAttribute("data-cadena");
+
+      const texto = `Para proceder con la emisión del certificado solicitado "${commonName}" por favor abra el siguiente enlace y proporcione los datos que se indican a continuación:
+
+Enlace de solicitud: ${enlace}
+
+Datos necesarios:
+    * Correo electrónico del solicitante: ${email}  Este valor es importante porque el certificado y las notificaciones de renovación, serán enviadas a esta dirección de correo. Preferiblemente indicar una lista de distribución o buzón de correo.
+    * Solicitud de firma del certificado (CSR): necesitará disponer de un fichero CSR (Certificate Signing Request) siguiendo el formato indicado en el procedimiento https://confluence.prosegur.net/x/cYl9E
+    * Recuerde, el "Common Name" que tendrá que poner en el CSR es: ${commonName}
+    * Comentarios: indicar el numero de ticket HELIX de la petición asociada.
+Ticket: ${ticket}
+
+Una vez enviada, la solicitud de certificado será revisada. Si es aprobada, recibirá en la dirección de correo indicada, un enlace para la descarga de su certificado. Si fuera denegada se indicará el motivo.
+
+Importante:
+    * Cadena de Certificados asociada: ${cadena}
+    * Información sobre cadena de certificados y puntos de distribución CRL/OCSP: https://confluence.prosegur.net/x/noh9E
+    * Información sobre validación de Certificados: https://confluence.prosegur.net/x/y-MiDw`;
+
+      document.getElementById("output").value = texto;
+    });
+  </script>
+</body>
+</html>
