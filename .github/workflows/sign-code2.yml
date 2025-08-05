@@ -69,6 +69,12 @@ jobs:
         #shell: bash
 
 
+      - name: Importar certificado al almacén de Windows
+        run: |
+        certutil -f -p "${{ secrets.SM_CLIENT_CERT_PASSWORD }}" -importpfx Certificate_pkcs12.p12
+        shell: cmd
+
+
       - name: Signing using certificate fingerprint      
         run: |
            smctl sign --fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --input .build/formulario.dll --config-file "%USERPROFILE%\.signingmanager\pkcs11properties.cfg"
