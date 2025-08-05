@@ -18,7 +18,7 @@ jobs:
      
       - name: Install DigiCert Client tools from Github Custom Actions marketplace
         id: Digicert Code Signing Snippet
-        uses: digicert/ssm-code-signing@v1.0.0
+        uses: digicert/ssm-code-signing@v1.1.0
    
       - name: Set up certificate 
         run: | 
