@@ -1,0 +1,41 @@
+
+name: Firma de código con DigiCert ONE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sign-code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar Java y herramientas necesarias
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jre curl unzip
+
+      - name: Descargar DigiCert Signing Manager CLI
+        run: |
+          curl -O https://dl.digicert.com/signingmanager/signingmanager.zip
+          unzip signingmanager.zip -d signingmanager
+
+      - name: Firmar archivo
+        run: |
+          FILE_TO_SIGN="archivo_a_firmar.dll"
+          java -jar signingmanager/signingmanager.jar \
+            -host "${{ secrets.SM_HOST }}" \
+            -apiKey "${{ secrets.SM_API_KEY }}" \
+            -clientCertFile "${{ secrets.SM_CLIENT_CERT_FILE }}" \
+            -clientCertPassword "${{ secrets.SM_CLIENT_CERT_PASSWORD }}" \
+            -codeSigningCertSha1Hash "${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }}" \
+            -inputFile "$FILE_TO_SIGN" \
+            -outputFile "archivo_firmado.ext"
+
+      - name: Subir archivo firmado como artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: archivo-firmado
+          path: archivo_firmado.ext
