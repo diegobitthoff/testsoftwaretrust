@@ -35,7 +35,7 @@ jobs:
             -outputFile "archivo_firmado.ext"
 
       - name: Subir archivo firmado como artefacto
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: archivo-firmado
           path: archivo_firmado.ext
