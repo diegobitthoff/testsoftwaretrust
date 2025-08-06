@@ -6,29 +6,21 @@ on:
 
 jobs:
   sign-code:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Clonar el repositorio
         uses: actions/checkout@v3
-        
-        
-        
+
       - name: Firmar archivo con DigiCert
-        uses: digicert/software-trust-manager-code-sign@v1
+        uses: cognitedata/code-sign-action@v3
         with:
-          inputFile: archivo_a_firmar.dll
-          outputFile: archivo_firmado.dll
+          path-to-binary: archivo_a_firmar.dll
         env:
-          SM_API_KEY: ${{ secrets.SM_API_KEY }}
-          SM_CLIENT_CERT_FILE: ${{ secrets.SM_CLIENT_CERT_FILE }}
-          SM_CLIENT_CERT_PASSWORD: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
-          SM_CODE_SIGNING_CERT_SHA1_HASH: ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }}
-          SM_HOST: ${{ secrets.SM_HOST }}
+          CERTIFICATE_HOST: ${{ secrets.SM_HOST }}
+          CERTIFICATE_HOST_API_KEY: ${{ secrets.SM_API_KEY }}
+          CERTIFICATE_SHA1_HASH: ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }}
+          CLIENT_CERTIFICATE: ${{ secrets.SM_CLIENT_CERT_FILE }}
+          CLIENT_CERTIFICATE_PASSWORD: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
+          KEYPAIR_ALIAS: ${{ secrets.SM_KEYPAIR_ALIAS }}
 
-
-      - name: Subir archivo firmado como artefacto
-        uses: actions/upload-artifact@v4
-        with:
-          name: archivo-firmado
-          path: archivo_firmado.ext
