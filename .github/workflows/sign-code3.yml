@@ -1,0 +1,52 @@
+name: Code Signing Workflow
+
+#on:
+ # push:
+  #  tags:
+   #   - 'v*.*.*'
+
+on: 
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
+
+    - name: Create folder
+      run: mkdir D:\\a\\github-action-electron\\github-action-electron\\dist
+
+    - name: Copy unsigned files
+      run: |
+        copy D:\\a\\github-action-electron\\github-action-electron\\UNSIGNED.nupkg D:\\a\\github-action-electron\\github-action-electron\\dist\\UNSIGNED.nupkg
+        copy D:\\a\\github-action-electron\\github-action-electron\\UNSIGNED2.manifest D:\\a\\github-action-electron\\github-action-electron\\dist\\UNSIGNED2.manifest
+
+    - name: Signing using Nuget
+      run: |
+        nuget sign "D:\\a\\github-action-electron\\github-action-electron\\dist\\UNSIGNED.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory "D:\\a\\github-action-electron\\github-action-electron\\dist\\Signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite
+        nuget verify -All "D:\\a\\github-action-electron\\github-action-electron\\dist\\Signed\\*"
+
+    - name: Signing using Mage
+      run: |
+        mage.exe -sign "D:\\a\\github-action-electron\\github-action-electron\\dist\\UNSIGNED2.manifest" -CertHash ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -a sha256RSA
+        mage -Verify "D:\\a\\github-action-electron\\github-action-electron\\dist\\UNSIGNED2.manifest"
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.os }}
+        path: dist
