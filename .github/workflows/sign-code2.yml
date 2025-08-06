@@ -63,10 +63,10 @@ jobs:
 
 
 
-      #- name: Signing using keypair alias
-       # run: |
-        #   smctl sign --keypair-alias TestDiegoSoftwareTrust --input .build/formulario.dll --config-file "%USERPROFILE%\.signingmanager\pkcs11properties.cfg"
-        #shell: bash
+      - name: Signing using keypair alias
+        run: |
+           smctl sign --keypair-alias Githubsigncert --input .build/formulario.dll --config-file "%USERPROFILE%\.signingmanager\pkcs11properties.cfg"
+        shell: bash
 
 
       #- name: Importar certificado al almacén de Windows
@@ -75,10 +75,10 @@ jobs:
         #shell: cmd
 
 
-      - name: Signing using certificate fingerprint      
-        run: |
-           smctl sign --fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --input .build/formulario.dll --config-file "%USERPROFILE%\.signingmanager\pkcs11properties.cfg"
-        shell: cmd
+      #- name: Signing using certificate fingerprint      
+       # run: |
+        #   smctl sign --fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --input .build/formulario.dll --config-file "%USERPROFILE%\.signingmanager\pkcs11properties.cfg"
+        #shell: cmd
          
       - name: Copiar log de smctl
         run: copy "%USERPROFILE%\.signingmanager\logs\smctl.log" smctl.log
