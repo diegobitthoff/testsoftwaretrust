@@ -11,18 +11,21 @@ jobs:
     steps:
       - name: Clonar el repositorio
         uses: actions/checkout@v3
-
+        
+        
+        
       - name: Firmar archivo con DigiCert
-        uses: digicert/ssm-code-signing@v1
+        uses: digicert/software-trust-manager-code-sign@v1
         with:
-          inputFile: archivo_a_firmar.ext
-          outputFile: archivo_firmado.ext
+          inputFile: archivo_a_firmar.dll
+          outputFile: archivo_firmado.dll
         env:
           SM_API_KEY: ${{ secrets.SM_API_KEY }}
           SM_CLIENT_CERT_FILE: ${{ secrets.SM_CLIENT_CERT_FILE }}
           SM_CLIENT_CERT_PASSWORD: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
           SM_CODE_SIGNING_CERT_SHA1_HASH: ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }}
           SM_HOST: ${{ secrets.SM_HOST }}
+
 
       - name: Subir archivo firmado como artefacto
         uses: actions/upload-artifact@v4
