@@ -69,10 +69,10 @@ jobs:
         #shell: bash
 
 
-      - name: Importar certificado al almacén de Windows
-        run: |
-        certutil -f -p "${{ secrets.SM_CLIENT_CERT_PASSWORD }}" -importpfx Certificate_pkcs12.p12
-        shell: cmd
+      #- name: Importar certificado al almacén de Windows
+       # run: |
+        #certutil -f -p "${{ secrets.SM_CLIENT_CERT_PASSWORD }}" -importpfx Certificate_pkcs12.p12
+        #shell: cmd
 
 
       - name: Signing using certificate fingerprint      
