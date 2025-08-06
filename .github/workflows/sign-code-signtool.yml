@@ -1,9 +1,7 @@
 name: Code Signing Workflow signtool windows
 
-on:
-  push:
-    tags:
-      - 'v*.*.*'
+on: 
+  workflow_dispatch:
 
 jobs:
   build:
