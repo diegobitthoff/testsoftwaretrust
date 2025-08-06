@@ -79,8 +79,7 @@ jobs:
         run: |
            smctl sign --fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --input .build/formulario.dll --config-file "%USERPROFILE%\.signingmanager\pkcs11properties.cfg"
         shell: cmd
-        
-        
+         
       - name: Copiar log de smctl
         run: copy "%USERPROFILE%\.signingmanager\logs\smctl.log" smctl.log
         shell: cmd
