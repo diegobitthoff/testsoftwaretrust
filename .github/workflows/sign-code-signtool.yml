@@ -1,0 +1,61 @@
+name: Code Signing Workflow signtool windows
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
+
+    - name: Set up certificate
+      run: |
+        echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > D:\\Certificate_pkcs12.p12
+      shell: bash
+
+    - name: Set environment variables
+      run: |
+        echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> $GITHUB_ENV
+        echo "C:\\Program Files (x86)\\Windows Kits\\10\\App Certification Kit" >> $GITHUB_PATH
+        echo "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v10.0A\\bin\\NETFX 4.8 Tools" >> $GITHUB_PATH
+        echo "C:\\Program Files\\DigiCert\\DigiCert One Signing Manager Tools" >> $GITHUB_PATH
+      shell: bash
+
+    - name: Install DigiCert Client tools
+      run: |
+        curl -X GET https://one.digicert.com/signingmanager/api-ui/v1/releases/smtools-windows-x64.msi/download -H "x-api-key:${{ secrets.SM_API_KEY }}" -o smtools-windows-x64.msi
+        msiexec /i smtools-windows-x64.msi /quiet /qn
+      shell: cmd
+
+    - name: Find Signtool
+      run: |
+        dir "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\" /s /b | findstr /i signtool.exe
+      shell: cmd
+
+    - name: Signing using Signtool
+      run: |
+        signtool sign /fd SHA256 /f D:\\Certificate_pkcs12.p12 /p ${{ secrets.SM_CLIENT_CERT_PASSWORD }} /tr http://timestamp.digicert.com /td SHA256 "D:\\a\\github-action-electron\\github-action-electron\\dist\\my-electron-app Setup ${{ steps.variables.outputs.version }}.exe"
+        signtool verify /v /pa "D:\\a\\github-action-electron\\github-action-electron\\dist\\my-electron-app Setup ${{ steps.variables.outputs.version }}.exe"
+      shell: cmd
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.os }}
+        path: dist
