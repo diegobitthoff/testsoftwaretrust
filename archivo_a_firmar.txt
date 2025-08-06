@@ -1,0 +1,1 @@
+Este es un archivo de prueba para validar la firma de código con DigiCert ONE.
