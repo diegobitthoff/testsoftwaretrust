@@ -1,0 +1,57 @@
+
+# Create the content of the GitHub Actions workflow file without the folder creation step
+workflow_content = """name: Firma de código con DigiCert ONE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sign-code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar Java y herramientas necesarias
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jre curl unzip
+
+      - name: Descargar DigiCert Signing Manager CLI
+        run: |
+          curl -O https://dl.digicert.com/signingmanager/signingmanager.zip
+          unzip signingmanager.zip -d signingmanager
+          chmod +x signingmanager/signingmanager.jar
+
+      - name: Firmar archivo
+        env:
+          SM_API_KEY: ${{ secrets.SM_API_KEY }}
+          SM_CLIENT_CERT_FILE: ${{ secrets.SM_CLIENT_CERT_FILE }}
+          SM_CLIENT_CERT_PASSWORD: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
+          SM_CODE_SIGNING_CERT_SHA1_HASH: ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }}
+          SM_HOST: ${{ secrets.SM_HOST }}
+        run: |
+          FILE_TO_SIGN="archivo_a_firmar.ext"
+          java -jar signingmanager/signingmanager.jar \
+            -host "$SM_HOST" \
+            -apiKey "$SM_API_KEY" \
+            -clientCertFile "$SM_CLIENT_CERT_FILE" \
+            -clientCertPassword "$SM_CLIENT_CERT_PASSWORD" \
+            -codeSigningCertSha1Hash "$SM_CODE_SIGNING_CERT_SHA1_HASH" \
+            -inputFile "$FILE_TO_SIGN" \
+            -outputFile "archivo_firmado.ext"
+
+      - name: Subir archivo firmado como artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: archivo-firmado
+          path: archivo_firmado.ext
+"""
+
+# Save the workflow content to the appropriate file
+workflow_path = ".github/workflows/code-signing.yml"
+with open(workflow_path, "w") as f:
+    f.write(workflow_content)
+
+print(f"El archivo '{workflow_path}' fue creado exitosamente sin el paso de creación de carpetas.")
