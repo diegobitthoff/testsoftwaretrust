@@ -29,10 +29,12 @@ jobs:
 
 
 
-      - name: Verificar certificados disponibles con smktool
+      
+      - name: Verificar certificados disponibles con smctl
         run: |
-          echo "Listando certificados disponibles con smktool..."
-          /tmp/digicert-tools/smtools-linux-x64/smktool list-certificates
+          echo "Listando certificados disponibles con smctl..."
+          /tmp/digicert-tools/smtools-linux-x64/smctl list-certificates
+
   
 
 
