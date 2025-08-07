@@ -12,15 +12,29 @@ jobs:
       - name: Clonar el repositorio
         uses: actions/checkout@v3
 
-      - name: Instalar jsign
+    
+      - name: Descomprimir DigiCert Signing Manager Tools
         run: |
-          curl -fSslL https://github.com/ebourg/jsign/releases/download/3.1/jsign_3.1_all.deb -o jsign_3.1_all.deb
-          sudo dpkg -i jsign_3.1_all.deb
+          mkdir -p /tmp/digicert-tools
+          tar -xzf tools/smtools-linux-x64.tar.gz -C /tmp/digicert-tools
+
+          
+          
+      - name: Verificar contenido descomprimido
+        run: |
+          echo "Contenido de /tmp/digicert-tools:"
+          ls -l /tmp/digicert-tools
+          echo "Contenido de subcarpetas:"
+          find /tmp/digicert-tools
+
+
 
       - name: Verificar certificados disponibles con smktool
         run: |
           echo "Listando certificados disponibles con smktool..."
-          /tmp/DigiCert\ One\ Signing\ Manager\ Tools/smtools-linux-x64/smktool list-certificates
+          /tmp/digicert-tools/smtools-linux-x64/smktool list-certificates
+  
+
 
       - name: Firmar archivo con DigiCert
         uses: cognitedata/code-sign-action@v3
