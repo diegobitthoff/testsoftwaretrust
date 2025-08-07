@@ -17,6 +17,12 @@ jobs:
         run: |
           mkdir -p /tmp/digicert-tools
           tar -xzf tools/smtools-linux-x64.tar.gz -C /tmp/digicert-tools
+          
+          
+      - name: Dar permisos de ejecución a smctl
+        run: |
+          chmod +x /tmp/digicert-tools/smtools-linux-x64/smctl
+
 
           
           
