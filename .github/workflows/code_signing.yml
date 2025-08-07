@@ -11,6 +11,15 @@ jobs:
     steps:
       - name: Clonar el repositorio
         uses: actions/checkout@v3
+        
+        
+      - name: Listar certificados en el keystore PKCS#11
+        run: |
+            jsign --keystore "/tmp/DigiCert One Signing Manager Tools/smtools-linux-x64/pkcs11properties.cfg" \
+                  --storetype PKCS11 \
+                  --storepass NONE \
+                  --list
+
 
       - name: Firmar archivo con DigiCert
         uses: cognitedata/code-sign-action@v3
