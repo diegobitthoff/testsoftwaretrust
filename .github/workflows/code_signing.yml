@@ -11,23 +11,16 @@ jobs:
     steps:
       - name: Clonar el repositorio
         uses: actions/checkout@v3
-        
-        
-      
+
       - name: Instalar jsign
         run: |
           curl -fSslL https://github.com/ebourg/jsign/releases/download/3.1/jsign_3.1_all.deb -o jsign_3.1_all.deb
           sudo dpkg -i jsign_3.1_all.deb
 
-      - name: Listar certificados en el keystore PKCS#11
+      - name: Verificar certificados disponibles con smktool
         run: |
-          echo "Listando certificados disponibles en el keystore PKCS#11..."
-          jsign --keystore "/tmp/DigiCert One Signing Manager Tools/smtools-linux-x64/pkcs11properties.cfg" \
-                --storetype PKCS11 \
-                --storepass NONE \
-                --list
-
-
+          echo "Listando certificados disponibles con smktool..."
+          /tmp/DigiCert\ One\ Signing\ Manager\ Tools/smtools-linux-x64/smktool list-certificates
 
       - name: Firmar archivo con DigiCert
         uses: cognitedata/code-sign-action@v3
