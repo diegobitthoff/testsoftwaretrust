@@ -15,7 +15,7 @@ jobs:
       - name: Firmar archivo con DigiCert
         uses: cognitedata/code-sign-action@v3
         with:
-          path-to-binary: archivo_a_firmar.txt
+          path-to-binary: winpty.exe
         env:
           CERTIFICATE_HOST: ${{ secrets.SM_HOST }}
           CERTIFICATE_HOST_API_KEY: ${{ secrets.SM_API_KEY }}
