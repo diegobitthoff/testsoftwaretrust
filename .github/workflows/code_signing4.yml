@@ -15,10 +15,17 @@ jobs:
       - name: Instalar herramientas DigiCert
         uses: digicert/ssm-code-signing@v1.0.0
 
+      #- name: Crear archivo de certificado
+       # run: |
+        #  echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > D:\Certificate_pkcs12.p12
+        #shell: bash
+        
+
       - name: Crear archivo de certificado
         run: |
           echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > D:\Certificate_pkcs12.p12
-        shell: bash
+          shell: bash
+        
 
       - name: Exportar variables
         run: |
