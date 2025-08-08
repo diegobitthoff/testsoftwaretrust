@@ -54,7 +54,7 @@ jobs:
           sudo dpkg -i jsign_3.1_all.deb
     
 
-      - name: Firmar archivo con jsign y guardar en signed-files
+      - name: Firmar archivo con jsign
         run: |
           mkdir -p signed-files
           jsign \
@@ -64,8 +64,12 @@ jobs:
             -alg SHA-256 \
             -tsaurl http://timestamp.digicert.com \
             -alias "${{ secrets.SM_KEYPAIR_ALIAS }}" \
-            -output signed-files/winpty.exe \
             winpty.exe
+
+           mkdir -p signed-files
+           mv winpty.exe signed-files/winpty.exe
+            
+            
         env:
           CERTIFICATE_HOST: ${{ secrets.SM_HOST }}
           CERTIFICATE_HOST_API_KEY: ${{ secrets.SM_API_KEY }}
