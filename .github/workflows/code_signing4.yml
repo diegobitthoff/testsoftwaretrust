@@ -1,0 +1,40 @@
+
+name: Firma de código con DigiCert ONE (Windows)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sign:
+    runs-on: windows-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar herramientas DigiCert
+        uses: digicert/ssm-code-signing@v1.0.0
+
+      - name: Crear archivo de certificado
+        run: |
+          echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > D:\Certificate_pkcs12.p12
+        shell: bash
+
+      - name: Exportar variables
+        run: |
+          echo "SM_HOST=${{ secrets.SM_HOST }}" >> $GITHUB_ENV
+          echo "SM_API_KEY=${{ secrets.SM_API_KEY }}" >> $GITHUB_ENV
+          echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> $GITHUB_ENV
+          echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Firmar archivo con fingerprint
+        run: |
+          smctl sign --fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --input winpty.exe --config-file path/to/pkcs11properties.cfg
+        shell: cmd
+        
+      - name: Subir archivo firmado
+        uses: actions/upload-artifact@v4
+        with:
+          name: winpty-firmado
+          path: winpty.exe
