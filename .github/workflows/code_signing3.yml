@@ -46,6 +46,13 @@ jobs:
         run: |
           echo "Listando certificados disponibles con smctl..."
           /tmp/digicert-tools/smtools-linux-x64/smctl cert list
+          
+      
+      - name: Instalar jsign
+        run: |
+          curl -fSslL https://github.com/ebourg/jsign/releases/download/3.1/jsign_3.1_all.deb -o jsign_3.1_all.deb
+          sudo dpkg -i jsign_3.1_all.deb
+    
 
       - name: Firmar archivo con jsign y guardar en signed-files
         run: |
