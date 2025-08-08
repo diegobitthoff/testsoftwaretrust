@@ -63,5 +63,5 @@ jobs:
           
       - name: Verificar firma del archivo
         run: |
-        jsign --verify winpty.exe
+          jsign --verify winpty.exe
 
