@@ -59,3 +59,9 @@ jobs:
           CLIENT_CERTIFICATE: ${{ secrets.SM_CLIENT_CERT_FILE }}
           CLIENT_CERTIFICATE_PASSWORD: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
           KEYPAIR_ALIAS: ${{ secrets.SM_KEYPAIR_ALIAS }}
+          
+          
+      - name: Verificar firma del archivo
+        run: |
+        jsign --verify winpty.exe
+
