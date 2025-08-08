@@ -61,7 +61,11 @@ jobs:
           KEYPAIR_ALIAS: ${{ secrets.SM_KEYPAIR_ALIAS }}
           
           
-      - name: Verificar firma del archivo
-        run: |
-          jsign --verify winpty.exe
+
+      - name: Subir archivo firmado como artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: winpty-firmado
+          path: signed-files/winpty.exe
+
 
