@@ -21,10 +21,11 @@ jobs:
         #shell: bash
         
 
-      - name: Crear archivo de certificado
+      - name: Crear archivo de certificado desde base64
         run: |
-          echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > D:\Certificate_pkcs12.p12
-          shell: bash
+          [System.IO.File]::WriteAllBytes("D:\Certificate_pkcs12.p12", [Convert]::FromBase64String("${{ secrets.SM_CLIENT_CERT_FILE_B64 }}"))
+        shell: pwsh
+
         
 
       - name: Exportar variables
