@@ -35,9 +35,9 @@ jobs:
           echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> $GITHUB_ENV
         shell: bash
 
-      #- name: Verificar archivo de certificado
-       # run: dir Certificate_pkcs12.p12
-        #shell: cmd
+      - name: Verificar archivo de certificado
+        run: dir Certificate_pkcs12.p12
+        shell: cmd
  
       - name: Listar archivos en .build
         run: dir .build        
