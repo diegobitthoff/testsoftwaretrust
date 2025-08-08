@@ -37,7 +37,7 @@ jobs:
         shell: bash
 
       - name: Verificar archivo de certificado
-        run: dir Certificate_pkcs12.p12
+        run: dir D:\Certificate_pkcs12.p12
         shell: cmd
  
       - name: Listar archivos en .build
