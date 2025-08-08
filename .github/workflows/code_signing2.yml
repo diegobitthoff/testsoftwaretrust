@@ -1,0 +1,61 @@
+
+name: Firma de código con DigiCert ONE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sign-code:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v3
+
+      - name: Crear archivo de configuración de credenciales
+        run: |
+          mkdir -p ~/.signingmanager
+          echo "SM_API_KEY=${{ secrets.SM_API_KEY }}" >> ~/.signingmanager/ssm-config.properties
+          echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> ~/.signingmanager/ssm-config.properties
+
+      - name: Decodificar archivo .p12
+        run: |
+          echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 -d > ~/.signingmanager/client.p12
+
+      - name: Exportar variables de entorno
+        run: |
+          echo "SM_HOST=${{ secrets.SM_HOST }}" >> $GITHUB_ENV
+          echo "SM_CLIENT_CERT_FILE=~/.signingmanager/client.p12" >> $GITHUB_ENV
+
+      - name: Descomprimir DigiCert Signing Manager Tools
+        run: |
+          mkdir -p /tmp/digicert-tools
+          tar -xzf tools/smtools-linux-x64.tar.gz -C /tmp/digicert-tools
+
+      - name: Dar permisos de ejecución a smctl
+        run: |
+          chmod +x /tmp/digicert-tools/smtools-linux-x64/smctl
+
+      - name: Verificar contenido descomprimido
+        run: |
+          echo "Contenido de /tmp/digicert-tools:"
+          ls -l /tmp/digicert-tools
+          echo "Contenido de subcarpetas:"
+          find /tmp/digicert-tools
+
+      - name: Verificar certificados disponibles con smctl
+        run: |
+          echo "Listando certificados disponibles con smctl..."
+          /tmp/digicert-tools/smtools-linux-x64/smctl cert list
+
+      - name: Firmar archivo con DigiCert
+        uses: cognitedata/code-sign-action@v3
+        with:
+          path-to-binary: winpty.exe
+        env:
+          CERTIFICATE_HOST: ${{ secrets.SM_HOST }}
+          CERTIFICATE_HOST_API_KEY: ${{ secrets.SM_API_KEY }}
+          CERTIFICATE_SHA1_HASH: ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }}
+          CLIENT_CERTIFICATE: ${{ secrets.SM_CLIENT_CERT_FILE }}
+          CLIENT_CERTIFICATE_PASSWORD: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
+          KEYPAIR_ALIAS: ${{ secrets.SM_KEYPAIR_ALIAS }}
