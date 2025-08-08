@@ -54,6 +54,7 @@ jobs:
 
       - name: Firmar archivo con fingerprint
         run: |
+          smctl healthcheck
           smctl sign --fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --input winpty.exe --config-file path/to/pkcs11properties.cfg
         shell: cmd
         
