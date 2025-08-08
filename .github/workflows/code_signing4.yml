@@ -32,13 +32,20 @@ jobs:
         run: |
           echo "SM_HOST=${{ secrets.SM_HOST }}" >> $GITHUB_ENV
           echo "SM_API_KEY=${{ secrets.SM_API_KEY }}" >> $GITHUB_ENV
-          echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> $GITHUB_ENV
+          echo "SM_CLIENT_CERT_FILE_B64=D:\\Certificate_pkcs12.p12" >> $GITHUB_ENV
           echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> $GITHUB_ENV
         shell: bash
 
       - name: Verificar archivo de certificado
         run: dir D:\Certificate_pkcs12.p12
         shell: cmd
+        
+
+      #- name: Importar certificado al almacén de Windows
+       # run: |
+        #  certutil -f -p "${{ secrets.SM_CLIENT_CERT_FILE }}" -importpfx "D:\Certificate_pkcs12.p12"
+        #shell: cmd
+        
  
       - name: Listar archivos en .build
         run: dir .build        
