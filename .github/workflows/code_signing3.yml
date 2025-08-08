@@ -1,4 +1,3 @@
-
 name: Firma de código con DigiCert ONE Jsign
 
 on:
@@ -48,20 +47,18 @@ jobs:
           echo "Listando certificados disponibles con smctl..."
           /tmp/digicert-tools/smtools-linux-x64/smctl cert list
 
-     
-	  - name: Firmar archivo con jsign y guardar en signed-files
-	    run: |
-	  	  mkdir -p signed-files
-	  	  jsign \
-			-keystore "$PKCS11_CONFIG" \
-			-storepass NONE \
-			-storetype PKCS11 \
-			-alg SHA-256 \
-			-tsaurl http://timestamp.digicert.com \
-			-alias "${{ secrets.SM_KEYPAIR_ALIAS }}" \
-			-output signed-files/winpty.exe \
-			winpty.exe
-
+      - name: Firmar archivo con jsign y guardar en signed-files
+        run: |
+          mkdir -p signed-files
+          jsign \
+            -keystore "$PKCS11_CONFIG" \
+            -storepass NONE \
+            -storetype PKCS11 \
+            -alg SHA-256 \
+            -tsaurl http://timestamp.digicert.com \
+            -alias "${{ secrets.SM_KEYPAIR_ALIAS }}" \
+            -output signed-files/winpty.exe \
+            winpty.exe
         env:
           CERTIFICATE_HOST: ${{ secrets.SM_HOST }}
           CERTIFICATE_HOST_API_KEY: ${{ secrets.SM_API_KEY }}
@@ -69,11 +66,11 @@ jobs:
           CLIENT_CERTIFICATE: ${{ secrets.SM_CLIENT_CERT_FILE }}
           CLIENT_CERTIFICATE_PASSWORD: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
           KEYPAIR_ALIAS: ${{ secrets.SM_KEYPAIR_ALIAS }}
-          
-          
+          PKCS11_CONFIG: /tmp/digicert-tools/smtools-linux-x64/pkcs11properties.cfg
 
       - name: Subir archivo firmado como artefacto
         uses: actions/upload-artifact@v4
         with:
           name: winpty-firmado
           path: signed-files/winpty.exe
+
