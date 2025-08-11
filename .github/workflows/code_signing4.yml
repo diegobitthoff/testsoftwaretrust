@@ -66,7 +66,7 @@ jobs:
 
       - name: Mostrar contenido base64 del archivo .p12
         run: |
-        [Convert]::ToBase64String([System.IO.File]::ReadAllBytes("D:\Certificate_pkcs12.p12"))
+          [Convert]::ToBase64String([System.IO.File]::ReadAllBytes("D:\Certificate_pkcs12.p12"))
         shell: pwsh
 
 
