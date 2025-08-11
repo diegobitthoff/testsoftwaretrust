@@ -23,7 +23,7 @@ jobs:
 
       - name: Crear archivo de certificado desde base64
         run: |
-          [System.IO.File]::WriteAllBytes("D:\Certificate_pkcs12.p12", [Convert]::FromBase64String("${{ secrets.SM_CLIENT_CERT_FILE_B64 }}"))
+          [System.IO.File]::WriteAllBytes("D:\Certificate_pkcs12.p12", [Convert]::FromBase64String("${{ secrets.SM_CLIENT_CERT_FILE }}"))
         shell: pwsh
 
         
@@ -32,7 +32,7 @@ jobs:
         run: |
           echo "SM_HOST=${{ secrets.SM_HOST }}" >> $GITHUB_ENV
           echo "SM_API_KEY=${{ secrets.SM_API_KEY }}" >> $GITHUB_ENV
-          echo "SM_CLIENT_CERT_FILE_B64=D:\\Certificate_pkcs12.p12" >> $GITHUB_ENV
+          echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> $GITHUB_ENV
           echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> $GITHUB_ENV
         shell: bash
 
