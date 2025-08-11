@@ -76,6 +76,11 @@ jobs:
         shell: pwsh
 
 
+      - name: Listar certificados disponibles
+        run: smctl list-certificates
+        shell: cmd
+
+
 
       - name: Firmar archivo con fingerprint
         run: |
