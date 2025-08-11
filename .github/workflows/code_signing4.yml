@@ -81,6 +81,14 @@ jobs:
         shell: cmd
 
 
+      - name: Firmar archivo con fingerprint
+        shell: pwsh
+        run: |
+          smctl healthcheck
+          smctl windows certsync --keypair-alias Githubsigncert
+          smctl sign --keypair-alias Githubsigncert --input winpty.exe
+
+
 
       - name: Firmar archivo con fingerprint
         run: |
