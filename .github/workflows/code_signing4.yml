@@ -85,8 +85,8 @@ jobs:
         shell: pwsh
         run: |
           smctl healthcheck
-          smctl windows certsync --keypair-alias Githubsigncert
-          smctl sign --keypair-alias Githubsigncert --input winpty.exe
+          smctl windows certsync --keypair-alias Githubkeypairsdev
+          smctl sign --keypair-alias Githubkeypairsdev --input winpty.exe
 
 
 
